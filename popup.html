@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ollama Chat</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="dot" id="status" title="Estado de Ollama"></span>
+      <span class="model" id="modelLabel">gemma4:12b</span>
+    </div>
+    <button class="icon" id="settingsBtn" title="Ajustes" aria-label="Ajustes">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+    </button>
+  </header>
+
+  <section class="settings" id="settings" hidden>
+    <label>Modelo
+      <input id="modelInput" type="text" spellcheck="false" placeholder="gemma4:12b">
+    </label>
+    <label>Dirección de Ollama
+      <input id="hostInput" type="text" spellcheck="false" placeholder="http://localhost:11434">
+    </label>
+    <label class="switch-row" for="thinkInput">
+      <span>Razonar<small>Respuestas más elaboradas, pero más lentas</small></span>
+      <input id="thinkInput" type="checkbox" class="switch">
+    </label>
+    <button class="solid small" id="saveSettings">Guardar</button>
+  </section>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" class="tab active" data-tab="chat" aria-selected="true">Asistente</button>
+    <button role="tab" class="tab" data-tab="protocols" aria-selected="false">Protocolos</button>
+    <button role="tab" class="tab" data-tab="ethical" aria-selected="false">Hacking ético</button>
+  </nav>
+
+  <!-- PROTOCOLOS -->
+  <main id="viewProtocols" class="view" hidden>
+    <div id="listView">
+      <p class="lead">Elige el tipo de incidente y sigue los pasos. Funciona sin el modelo y guarda tu progreso.</p>
+      <div id="cards" class="cards"></div>
+      <details class="escalate">
+        <summary>Cuándo y a quién escalar</summary>
+        <div id="escalateBody"></div>
+      </details>
+    </div>
+    <div id="detailView" hidden></div>
+  </main>
+
+  <!-- HACKING ÉTICO -->
+  <main id="viewEthical" class="view" hidden>
+    <div id="ethList">
+      <p class="notice"><strong>Solo concienciación y defensa.</strong> Aquí aprendes cómo funcionan los ataques para reconocerlos y protegerte. Nunca pruebes sistemas ajenos sin autorización escrita.</p>
+      <div id="ethCards" class="cards"></div>
+    </div>
+    <div id="ethDetail" hidden></div>
+  </main>
+
+  <!-- ASISTENTE -->
+  <section id="viewChat" class="view chat">
+    <div class="chat-bar">
+      <span class="chat-title">Consulta a tu modelo local</span>
+      <button class="ghost" id="newBtn">Nueva consulta</button>
+    </div>
+    <div id="messages" class="messages">
+      <div class="empty" id="empty">
+        <p class="empty-title">Describe qué está pasando</p>
+        <p class="empty-sub">Te propondré los pasos en orden de prioridad. Todo se procesa en tu equipo.</p>
+        <div class="chips" id="chips"></div>
+      </div>
+    </div>
+    <footer>
+      <div class="composer">
+        <textarea id="input" rows="1" placeholder="Escribe tu duda o incidente" spellcheck="true"></textarea>
+        <button class="send" id="sendBtn" aria-label="Enviar">
+          <svg id="sendIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          <svg id="stopIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+        </button>
+      </div>
+      <div class="hint">Enter envía · Mayús+Enter salto de línea · Verifica siempre las acciones críticas</div>
+    </footer>
+  </section>
+
+  <script src="playbooks.js"></script>
+  <script src="concienciacion.js"></script>
+  <script src="popup.js"></script>
+  <script src="etico.js"></script>
+</body>
+</html>
