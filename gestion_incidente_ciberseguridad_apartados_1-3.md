@@ -38,7 +38,8 @@ Se sigue la lógica de MAGERIT v3 / ISO 27005: activo → amenaza → vulnerabil
 **Niveles:** Crítico 15-25 · Alto 10-14 · Medio 5-9 · Bajo 1-4.
 
 > 📸 **[CAPTURA 1.1]** Inventario de activos obtenido en el laboratorio (`nmap -sV 192.168.1.0/24`, `ss -tulpn`, `Get-NetTCPConnection -State Listen`).
-> ![Captura 1.1](capturas/captura_1_1.png)
+><img width="2560" height="3436" alt="image" src="https://github.com/user-attachments/assets/b13671d5-2a92-4596-9361-6a314146ef77" />
+
 
 ## 1.2 Normas de seguridad para los puestos de trabajo
 
