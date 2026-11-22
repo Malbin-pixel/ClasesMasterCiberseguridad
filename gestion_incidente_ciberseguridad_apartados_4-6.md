@@ -136,9 +136,7 @@ sudo ufw logging medium
 - Segmentación en VLAN (oficina, servidores, planta/IoT, invitados) con reglas entre zonas.
 - Inspección TLS selectiva/proxy para tráfico saliente de estaciones.
 
-> 📸 **[CAPTURA 4.2]** Reglas de bloqueo (cortafuegos y DNS) y el log con el primer intento denegado.
->
-> 
+> <img width="907" height="332" alt="image" src="https://github.com/user-attachments/assets/f8854041-486e-45d0-9c9a-807f6d10c9b1" />
 
 ### 4.1.3 Revocación de credenciales comprometidas
 
@@ -183,7 +181,7 @@ sudo passwd -l usuario
 sudo rm ~/.ssh/authorized_keys     # tras copiar como evidencia; regenerar claves
 ```
 
-> 📸 **[CAPTURA 4.3]** Cuenta deshabilitada, contraseña restablecida y fallo de inicio de sesión posterior (evento 4625/4768 con error).
+> <img width="911" height="297" alt="image" src="https://github.com/user-attachments/assets/2be341b8-42c5-42e1-9b1c-187f10ab5661" />
 
 ### 4.1.4 Erradicación de la amenaza
 
@@ -361,7 +359,7 @@ while true; do curl -s -m 3 http://192.168.56.30:8080/ping >/dev/null; sleep 60;
 
 > <img width="908" height="272" alt="image" src="https://github.com/user-attachments/assets/6cb9892b-3fd6-4539-b7e0-82a3554477de" />
 
-> 📸 **[CAPTURA 4.8]** Informe de Lynis o CIS-CAT antes y después del bastionado.
+> <img width="908" height="137" alt="image" src="https://github.com/user-attachments/assets/a2c50999-63cb-49a1-b48f-281adb777391" />
 
 ## 4.4 Medidas para evitar nuevos incidentes
 
@@ -430,8 +428,6 @@ La **ciberresiliencia** es la capacidad de la organización de **seguir cumplien
 ---
 
 # 5. Notificación y organismos de respuesta
-
-> **Nota metodológica:** las referencias normativas y de organismos de este apartado se contrastaron con fuentes oficiales y secundarias consultadas el **12-11-2026** (AEPD, INCIBE-CERT, CCN-CERT, ENISA, BOE). Los datos del incidente (fechas, horas, nombres, cifras) son **ficticios o marcadores** `[entre corchetes]`. La normativa cambia: antes de entregar, vuelve a comprobar cada enlace y la vigencia de cada norma.
 
 ## 5.1 Modelo de comunicación interna del incidente
 
