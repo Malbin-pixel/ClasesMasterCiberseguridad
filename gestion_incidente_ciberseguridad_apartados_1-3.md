@@ -38,6 +38,7 @@ Se sigue la lógica de MAGERIT v3 / ISO 27005: activo → amenaza → vulnerabil
 **Niveles:** Crítico 15-25 · Alto 10-14 · Medio 5-9 · Bajo 1-4.
 
 > 📸 **[CAPTURA 1.1]** Inventario de activos obtenido en el laboratorio (`nmap -sV 192.168.1.0/24`, `ss -tulpn`, `Get-NetTCPConnection -State Listen`).
+
 ><img width="2560" height="3436" alt="image" src="https://github.com/user-attachments/assets/b13671d5-2a92-4596-9361-6a314146ef77" />
 
 
@@ -67,9 +68,10 @@ Get-MpComputerStatus | Select AMServiceEnabled, RealTimeProtectionEnabled
 Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name Start   # 4 = deshabilitado
 ```
 
-![[captura_1_2.png]]
-
 > 📸 **[CAPTURA 1.2]** Salida de los comandos anteriores y/o directiva de grupo aplicada.
+
+> <img width="2560" height="2342" alt="image" src="https://github.com/user-attachments/assets/c000caeb-6e9d-463a-a661-e91ff50b890b" />
+
 
 ## 1.3 Plan de formación y concienciación
 
