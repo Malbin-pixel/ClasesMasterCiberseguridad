@@ -4,7 +4,7 @@
 
 > **Caso:** empresa de ~100 empleados, infraestructura híbrida (Ubuntu Server y Windows Server con Directorio Activo), sin procedimientos formales de prevención ni de respuesta. Incidente de phishing con ejecución de un adjunto malicioso y sospecha de exfiltración de datos de clientes.
 
-**Autor/a:** _(nombre)_ · **Fecha:** _(fecha)_ · **Rol:** responsable del equipo de ciberseguridad
+**Autor/a:** Malbin Rafael Moya · **Fecha:** 22/11/2026 · **Rol:** Responsable del equipo de ciberseguridad
 
 ---
 
