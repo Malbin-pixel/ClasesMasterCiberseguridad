@@ -1,11 +1,5 @@
 # 4. Respuesta y recuperación
 
-> **Reglas del laboratorio**
-> - Todo lo que sigue se ejecuta **solo en el entorno autorizado** (máquinas virtuales y red aislada), con instantánea «base limpia» previa.
-> - Los comandos que modifican cuentas, reglas de cortafuegos o servicios están pensados para el laboratorio. En producción se ejecutan con aprobación del responsable de seguridad y dejando constancia en la bitácora.
-> - IP, dominios, cuentas y equipos son **ficticios**: `203.0.113.45` (C2), `rrhh-empresa-portal[.]example`, equipo `PC-RRHH-07` (`192.168.1.50`), usuario `jperez`.
-> - **Antes de contener, se preserva evidencia volátil** (apartado 3): no se apaga, no se reinstala y no se «limpia» nada hasta haber capturado RAM y estado de red.
-
 ## 4.1 Procedimiento operativo estándar (SOP)
 
 ### Ficha del procedimiento
@@ -102,7 +96,7 @@ Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational'; 
   Where-Object { $_.Message -match '203\.0\.113\.45' } | Select TimeCreated, Message
 ```
 
-> 📸 **[CAPTURA 4.1]** Reglas de aislamiento creadas y prueba de que el equipo ya no tiene conectividad.
+> <img width="905" height="515" alt="image" src="https://github.com/user-attachments/assets/0b96a623-3e80-4145-8625-bc34709b8843" />
 
 ### 4.1.2 Bloqueo perimetral de conexiones maliciosas
 
@@ -143,6 +137,8 @@ sudo ufw logging medium
 - Inspección TLS selectiva/proxy para tráfico saliente de estaciones.
 
 > 📸 **[CAPTURA 4.2]** Reglas de bloqueo (cortafuegos y DNS) y el log con el primer intento denegado.
+>
+> 
 
 ### 4.1.3 Revocación de credenciales comprometidas
 
@@ -187,8 +183,6 @@ sudo passwd -l usuario
 sudo rm ~/.ssh/authorized_keys     # tras copiar como evidencia; regenerar claves
 ```
 
-> ⚠️ El doble reset de `krbtgt` invalida los tickets Kerberos de todo el dominio. Se planifica, se comunica y se hace en horario de menor impacto. Si no hay evidencia de compromiso del DC, no es necesario.
-
 > 📸 **[CAPTURA 4.3]** Cuenta deshabilitada, contraseña restablecida y fallo de inicio de sesión posterior (evento 4625/4768 con error).
 
 ### 4.1.4 Erradicación de la amenaza
@@ -230,7 +224,7 @@ sudo find / -xdev -newermt "2026-11-01" -type f -perm -4000 2>/dev/null   # SUID
 | Controlador de dominio con indicios de compromiso | Valorar **reconstrucción** del DC (o del bosque) con asistencia especializada |
 | Equipo que solo recibió el correo sin abrirlo | Purgar correo y vigilar |
 
-> 📸 **[CAPTURA 4.4]** Revisión de persistencia sin hallazgos tras la erradicación, y equipo reconstruido con línea base aplicada.
+> <img width="907" height="281" alt="image" src="https://github.com/user-attachments/assets/ce69c5aa-ffe5-40bc-8e2e-b126f5c9a33f" />
 
 ## 4.2 Plan de recuperación segura de servicios
 
@@ -309,7 +303,7 @@ Get-FileHash .\datos_restaurados\* -Algorithm SHA256 | Export-Csv restauracion_h
 | 8 | Vigilancia reforzada (≥ 14 días) con alertas sobre IoC | Sin reaparición |
 | 9 | Cierre del incidente y registro de la recuperación | Bitácora completada |
 
-> 📸 **[CAPTURA 4.5]** Backup, `restic check`, restauración de prueba y comparación de hashes/`diff` (RESTAURACION OK).
+> <img width="907" height="331" alt="image" src="https://github.com/user-attachments/assets/88d87df3-19d1-41fc-9c23-3294a886fb59" />
 
 ### Gestión de la presión de la dirección
 
@@ -363,8 +357,10 @@ while true; do curl -s -m 3 http://192.168.56.30:8080/ping >/dev/null; sleep 60;
 | % equipos con contramedida aplicada | Equipos conformes / total | 100 % |
 | Restauraciones correctas | Pruebas OK / pruebas realizadas | 100 % |
 
-> 📸 **[CAPTURA 4.6]** Comparativa antes/después del tráfico a la IP (pcap/log de cortafuegos).
-> 📸 **[CAPTURA 4.7]** `nslookup` del dominio con sinkhole, e inicio de sesión fallido con la cuenta revocada.
+> <img width="806" height="282" alt="image" src="https://github.com/user-attachments/assets/3a26cf08-5235-42e8-9338-240ad95592a6" />
+
+> <img width="908" height="272" alt="image" src="https://github.com/user-attachments/assets/6cb9892b-3fd6-4539-b7e0-82a3554477de" />
+
 > 📸 **[CAPTURA 4.8]** Informe de Lynis o CIS-CAT antes y después del bastionado.
 
 ## 4.4 Medidas para evitar nuevos incidentes
@@ -385,8 +381,6 @@ Las lecciones del incidente se traducen en un plan priorizado (criterios del pla
 | M10 | Formación y simulacros de phishing trimestrales | Factor humano | Preventiva | Continuo | Bajo |
 | M11 | Procedimiento de incidentes y simulacro anual | Falta de respuesta formal | Organizativa | 90 d | Bajo |
 | M12 | Parcheo por criticidad y revisión mensual | Vulnerabilidades | Preventiva | 60 d | 0 € |
-
-> Criterio circular: reutilizar hardware retirado como sonda Wazuh/cortafuegos y consolidar servidores en máquinas virtuales reduce coste y consumo sin merma de seguridad.
 
 ## 4.5 Ciberresiliencia: anticipación, resistencia, recuperación y evolución
 
@@ -432,9 +426,6 @@ La **ciberresiliencia** es la capacidad de la organización de **seguir cumplien
 - Documentación de restic: https://restic.readthedocs.io
 - CIS Controls v8.1 (11: recuperación de datos; 17: respuesta a incidentes): https://www.cisecurity.org
 - Real Decreto 311/2022 (ENS), medidas de continuidad y respuesta: https://www.boe.es
-
-> ⚠️ **Antes de entregar:** sustituye los enlaces generales por las páginas concretas con fecha de consulta; adapta RTO/RPO a los valores que acuerdes con la dirección; comprueba la numeración vigente de la CCN-STIC 817 y la guía nacional; y verifica en tu laboratorio cada comando antes de capturar la evidencia.
-
 
 ---
 
@@ -511,7 +502,7 @@ La **ciberresiliencia** es la capacidad de la organización de **seguir cumplien
 >
 > **Contacto:** [DPD, correo, teléfono]. Hemos [notificado/vamos a notificar] el incidente a la Agencia Española de Protección de Datos.
 
-> 📸 **[CAPTURA 5.1]** Comunicación interna redactada y enviada por el canal alternativo (o ticket con la comunicación registrada).
+> <img width="805" height="355" alt="image" src="https://github.com/user-attachments/assets/1395e5b5-519f-4a16-8dd1-24719dd0c627" />
 
 ## 5.2 Notificación de una brecha de datos personales a la AEPD
 
@@ -579,9 +570,7 @@ El RGPD prevé sanciones administrativas por infringir las obligaciones de los a
 | **Clientes/proveedores** | Si sus datos o sistemas se ven afectados o lo exige el contrato |
 | **Regulador sectorial** | Si la empresa es de un sector regulado (financiero, sanitario, telecomunicaciones) |
 
-> ⚖️ **Estado de NIS2 en España:** la Directiva (UE) 2022/2555 debía transponerse antes del 17-10-2024. Según las fuentes consultadas, el anteproyecto de Ley de Coordinación y Gobernanza de la Ciberseguridad (aprobado por el Consejo de Ministros el 14-01-2025) seguía en tramitación en 2026 y no estaba publicado en el BOE. **Comprueba el BOE** antes de afirmar qué obligaciones están en vigor. Una empresa de 100 empleados podría quedar dentro de su ámbito según el sector.
-
-> 📸 **[CAPTURA 5.2]** Resultado de la herramienta *Asesora Brecha* (con datos de prueba) o formulario de notificación con los campos preparados (sin enviarlo).
+> <img width="807" height="332" alt="image" src="https://github.com/user-attachments/assets/5568786a-9b25-44ef-b3d7-8944d13f23db" />
 
 ## 5.3 Organismos CERT/CSIRT
 
@@ -620,8 +609,6 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 | Herramientas | **LUCIA** (gestión y notificación de ciberincidentes), **CLARA** (cumplimiento técnico), **PILAR** (análisis de riesgos), **REYES** (intercambio de inteligencia), **INES** (informe del estado de la seguridad) |
 | Notificación | Las entidades del ámbito del ENS notifican por **LUCIA** según la Instrucción Técnica de Seguridad de notificación de incidentes |
 | ¿Cuándo recurrir? | Si la empresa **presta servicios al sector público** o sus sistemas se rigen por el ENS; si no, su vía principal es INCIBE-CERT |
-
-> En la **Guía Nacional de Notificación y Gestión de Ciberincidentes** se establece la clasificación por peligrosidad e impacto y qué CSIRT de referencia corresponde a cada comunidad. Para la UD1, los niveles (Crítico, Muy alto, Alto, Medio, Bajo) y los plazos (notificación inicial inmediata a partir de Alto; intermedia y final para Crítico y Muy alto) aparecen resumidos en el material de clase; **confirma las cifras en la versión vigente de la guía**.
 
 ### Equipo 3 (internacional): red de CSIRT de la UE (CSIRTs Network) y ENISA
 
@@ -662,8 +649,9 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 | Clasificación TLP | **TLP:AMBER** (distribución limitada) por defecto |
 | Contacto técnico | Persona de guardia disponible en horario de crisis |
 
-> 📸 **[CAPTURA 5.3]** Página de reporte de incidentes de INCIBE-CERT y/o ficha de LUCIA/CCN-CERT.
-> 📸 **[CAPTURA 5.4]** Borrador del reporte al CSIRT con los IoC del caso (sin enviarlo si es ficticio).
+> <img width="806" height="367" alt="image" src="https://github.com/user-attachments/assets/8f8944d0-fa32-4e11-9501-8bbd67cf3557" />
+
+> <img width="803" height="330" alt="image" src="https://github.com/user-attachments/assets/f428f9b7-aa0e-4e7d-b406-be671038db92" />
 
 ## 5.4 Responsables y plazos (resumen)
 
@@ -699,14 +687,9 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 - Directiva (UE) 2022/2555 (NIS2): https://eur-lex.europa.eu
 - Real Decreto 311/2022 (ENS): https://www.boe.es
 
-> ⚠️ **Antes de entregar:** verifica que cada enlace funciona y añade la fecha de consulta; comprueba el estado de la ley española de transposición de NIS2 en el BOE; confirma los niveles y plazos de la Guía Nacional de Notificación vigente; y sustituye los marcadores `[ ]` por los datos de tu caso.
-
-
 ---
 
 # 6. Simulación de crisis (ejercicio de mesa)
-
-> **Cómo usar este apartado.** El trabajo es individual, así que el guion está escrito para que **una sola persona** pueda presentarlo: leyéndolo como un diálogo con distintas voces, grabándolo en vídeo/audio con roles, o defendiéndolo oralmente como «director del ejercicio» y explicando cada decisión. Todos los datos (nombres, horas, IP, volúmenes) son **ficticios** y deben alinearse con los de los apartados 2-5 de tu documento.
 
 ## 6.1 Ficha del ejercicio
 
@@ -751,8 +734,6 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 ## 6.3 Guion de la reunión
 
-> **Convención:** **[Control]** introduce la información nueva. Las intervenciones marcadas con ✅ son decisiones; las ❓ son dudas que el equipo debe resolver con el procedimiento.
-
 ### Escena 0: apertura (08:15)
 
 **Marta (Director):** Buenos días. Abro el incidente **INC-2026-0001**, nivel **Crítico provisional**, prioridad **P1**. Hechos confirmados: un empleado ejecutó un adjunto de un correo que suplanta a RR. HH.; el antivirus alertó; hay conexiones salientes a `203[.]0[.]113[.]45`; hubo intentos de acceso a carpetas compartidas. Hipótesis sin confirmar: exfiltración de datos de clientes. Reglas: **aislar, no apagar; bitácora desde el minuto uno; canal alternativo fuera del correo.** Luis, ¿estado?
@@ -761,11 +742,9 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 **Eva (N1):** He recibido 11 avisos más de empleados que recibieron el mismo correo. Nueve no lo abrieron; dos dicen que sí.
 
-**Marta:** ✅ Eva, llama a esos dos ahora (no por correo) y pídeles que desconecten el equipo sin apagarlo. ✅ Luis, purga el mensaje de todos los buzones y busca el hash del adjunto en la red. Andrés, quedas avisado: hay posible acceso a datos personales.
+**Marta:**  Eva, llama a esos dos ahora (no por correo) y pídeles que desconecten el equipo sin apagarlo. ✅ Luis, purga el mensaje de todos los buzones y busca el hash del adjunto en la red. Andrés, quedas avisado: hay posible acceso a datos personales.
 
 **Andrés (DPD):** Anotado. Todavía **no hay constancia** de brecha de datos personales; la **registro como posible** y empiezo a preparar la evaluación del art. 33.
-
-> 📝 **Bitácora 08:20** Aislamiento y bloqueo realizados; purga de correo iniciada; DPD informado; se contacta con dos usuarios que abrieron el adjunto.
 
 ---
 
@@ -775,11 +754,11 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 **Luis:** Esto cambia el alcance. No es solo un equipo: hay **segundo equipo comprometido** y posible **movimiento lateral** por SMB.
 
-**Marta:** ❓ ¿Qué sabemos del movimiento lateral? ❓ ¿Qué credenciales usó?
+**Marta:**  ¿Qué sabemos del movimiento lateral?  ¿Qué credenciales usó?
 
 **Luis:** En el DC veo un 4624 tipo 3 de `jperez` hacia `PC-CONT-12` a las 07:58 y un 4672 de una cuenta con privilegios. Podría haber usado credenciales cacheadas.
 
-**Marta:** ✅ **Decisiones:**
+**Marta:**  **Decisiones:**
 1. Aislar `PC-CONT-12` **sin apagarlo** y capturar su RAM antes de nada.
 2. **Ampliar la búsqueda** de IoC a toda la red (hash, IP, dominio, tareas programadas, SMB entre estaciones).
 3. **Reevaluar el nivel:** se confirma **Crítico** (más de un equipo + cuenta privilegiada).
@@ -796,8 +775,6 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 | Tratar cuentas como comprometidas | Las credenciales en memoria pueden haberse extraído; sin revocarlas, la contención es ilusoria |
 | Bloquear SMB entre estaciones | Corta la propagación lateral sin impactar a servidores |
 
-> 📝 **Bitácora 08:55** Segundo equipo comprometido; aislamiento; búsqueda ampliada; reevaluación a Crítico; cuenta privilegiada bajo sospecha.
-
 ---
 
 ### Escena 2: INJECT 2: «Indicios de extracción de información» (09:05)
@@ -806,7 +783,7 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 **Andrés (DPD):** Esto ya es **constancia razonable** de que hubo acceso a datos personales de clientes. **El reloj de las 72 horas empieza a contar desde las 09:05 de hoy.** Los datos de la carpeta incluyen nombre, DNI, dirección, correo y teléfono; no veo tarjetas ni datos de salud.
 
-**Marta:** ❓ ¿Qué sabemos del contenido exacto?
+**Marta:**  ¿Qué sabemos del contenido exacto?
 
 **Luis:** Los 5145 indican qué ficheros se **leyeron**, no necesariamente cuáles salieron. El volumen de 2,3 GB es compatible con una parte importante de la carpeta.
 
@@ -814,7 +791,7 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 **Andrés:** Debemos **notificar a la AEPD en ≤ 72 h** salvo que sea improbable el riesgo; aquí **no es improbable**. Se puede hacer **por fases**. La comunicación a los clientes (art. 34) depende de si el riesgo es **alto**: con DNI + dirección + contacto, hay riesgo de suplantación y *phishing* dirigido, así que **lo más prudente es prepararla**.
 
-**Marta:** ✅ **Decisiones:**
+**Marta:**  **Decisiones:**
 1. **Registrar la hora de constancia (09:05)** en la ficha y fijar el límite de notificación a la AEPD en **[fecha de hoy] 09:05 + 72 h** (calcula la fecha límite real).
 2. Andrés prepara el **formulario de la AEPD** con la información disponible; **notificación inicial** antes de las 24-48 h y ampliación posterior.
 3. **Preservar los logs** (cortafuegos, 5145, Sysmon, pcap) con hash: serán la base para cuantificar el alcance.
@@ -835,8 +812,6 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 **Carlos (Dirección):** Entendido. Autorizo la notificación a la AEPD y a INCIBE-CERT. Sobre los clientes, lo decidimos cuando Andrés cuantifique el alcance, pero **prepárenlo hoy**.
 
-> 📝 **Bitácora 09:20** Constancia de brecha a las 09:05; AEPD en preparación; INCIBE-CERT contactado; comunicado a afectados en borrador.
-
 ---
 
 ### Escena 3: INJECT 3: «El atacante mantiene el acceso» (09:30)
@@ -845,11 +820,11 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 **Luis:** El atacante **sigue dentro**. Tiene credenciales de otra cuenta, persistencia en el servidor de ficheros y una cuenta administradora creada por él. Y ya no usa la IP que bloqueamos: ha **cambiado de infraestructura**.
 
-**Marta:** ❓ Si actuamos por piezas, avisamos al atacante y puede borrar huellas o acelerar. ❓ Si no actuamos, mantiene el acceso. ¿Qué hacemos?
+**Marta:**  Si actuamos por piezas, avisamos al atacante y puede borrar huellas o acelerar.  Si no actuamos, mantiene el acceso. ¿Qué hacemos?
 
 **Luis:** Propongo una **expulsión coordinada**: se prepara todo y se ejecuta **de una vez**. Mientras, vigilancia pasiva y sin tocar nada que lo alerte.
 
-**Marta:** ✅ **Decisiones:**
+**Marta:**  **Decisiones:**
 1. **Evaluar el DC como posiblemente comprometido:** nueva cuenta administradora + tarea programada + credenciales. Se activa la hipótesis de **compromiso del dominio**.
 2. **Preparar la expulsión coordinada** (ventana corta, p. ej. 30-45 min) con estas acciones simultáneas:
    - deshabilitar `svc_backup2` y `mgarcia`, **revocar sesiones VPN** y exigir MFA;
@@ -873,8 +848,6 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 | Apoyo externo | La empresa no tiene capacidad de DFIR de dominio; un error en el DC tiene impacto en toda la organización |
 | Verificar copias | Si el atacante llegó al backup, restaurar desde ellas reinfectaría |
 
-> 📝 **Bitácora 09:50** Acceso persistente confirmado; plan de expulsión coordinada; hipótesis de compromiso del DC; solicitud de apoyo externo.
-
 ---
 
 ### Escena 4: INJECT 4: «La dirección exige recuperar los servicios inmediatamente» (09:50)
@@ -889,7 +862,7 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 **Luis:** Con la expulsión coordinada esta tarde, los servicios mínimos podrían reactivarse en **4-8 h**; el servidor de ficheros, en **24 h** tras reconstruirlo desde copia limpia.
 
-**Marta:** ✅ **Decisiones:**
+**Marta:**  **Decisiones:**
 1. **No se restaura nada hasta completar la expulsión y la erradicación** en el segmento afectado.
 2. **Servicios por prioridad** (apartado 4.2): red/DNS → AD → **ficheros** → correo → web. Se reactivan **solo cuando cumplan el checklist de salida**.
 3. **Plan de continuidad** inmediato: la web pasa a **página estática de mantenimiento** y pedidos por teléfono/correo alternativo; ventas usa un **fichero temporal de solo lectura**, sin datos personales sensibles.
@@ -922,8 +895,6 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 
 **Carlos:** De acuerdo: prefiero 24 horas con un plan a 24 días con otro incidente. Firmo el calendario.
 
-> 📝 **Bitácora 10:10** Decisión de recuperación escalonada; plan de continuidad activado; riesgo residual firmado.
-
 ---
 
 ### Escena 5: cierre (10:10)
@@ -940,9 +911,11 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 | D4 | 09:50 | Acceso persistente | Expulsión coordinada + apoyo externo | Marta | Evitar reentrada | Apdo. 4.1.3-4.1.4 |
 | D5 | 10:10 | Presión de la dirección | Recuperación escalonada | Carlos/Marta | Evitar reinfección | Apdo. 4.2 |
 
-> 📸 **[CAPTURA 6.1]** Bitácora del ejercicio con las horas y decisiones (hoja de cálculo o ticket).
-> 📸 **[CAPTURA 6.2]** Acta/Registro de decisiones firmado, o captura del vídeo/grabación del ejercicio.
-> 📸 **[CAPTURA 6.3]** Checklist de reanudación cumplimentado.
+> <img width="802" height="388" alt="image" src="https://github.com/user-attachments/assets/b3635fe5-361c-41b1-b593-da4f4aca130e" />
+
+> <img width="805" height="301" alt="image" src="https://github.com/user-attachments/assets/a06028cd-9642-4d01-a96f-2f41db8594ff" />
+
+> <img width="806" height="408" alt="image" src="https://github.com/user-attachments/assets/98d69a9d-7f2b-456d-a689-415e6fe19abd" />
 
 ## 6.5 Mensajes finales de comunicación
 
@@ -1013,6 +986,4 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 - RFC 3227 – Directrices para la recogida y archivo de evidencias: https://www.rfc-editor.org/rfc/rfc3227
 - MITRE ATT&CK (persistencia, movimiento lateral, exfiltración): https://attack.mitre.org
 - Apartados 2-5 de este documento (clasificación, evidencias, SOP y notificación)
-
-> ⚠️ **Antes de entregar:** ajusta fechas, horas, nombres, volúmenes e IoC a los de tus apartados anteriores; decide si presentas el ejercicio como guion escrito, vídeo o defensa oral; y completa con tus capturas y el registro de decisiones.
 
