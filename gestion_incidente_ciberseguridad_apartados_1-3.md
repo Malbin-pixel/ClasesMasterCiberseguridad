@@ -37,8 +37,6 @@ Se sigue la lógica de MAGERIT v3 / ISO 27005: activo → amenaza → vulnerabil
 
 **Niveles:** Crítico 15-25 · Alto 10-14 · Medio 5-9 · Bajo 1-4.
 
-> 📸 **[CAPTURA 1.1]** Inventario de activos obtenido en el laboratorio (`nmap -sV 192.168.1.0/24`, `ss -tulpn`, `Get-NetTCPConnection -State Listen`).
-
 ><img width="2560" height="3436" alt="image" src="https://github.com/user-attachments/assets/b13671d5-2a92-4596-9361-6a314146ef77" />
 
 
@@ -68,10 +66,7 @@ Get-MpComputerStatus | Select AMServiceEnabled, RealTimeProtectionEnabled
 Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name Start   # 4 = deshabilitado
 ```
 
-> 📸 **[CAPTURA 1.2]** Salida de los comandos anteriores y/o directiva de grupo aplicada.
-
 > <img width="2560" height="2342" alt="image" src="https://github.com/user-attachments/assets/c000caeb-6e9d-463a-a661-e91ff50b890b" />
-
 
 ## 1.3 Plan de formación y concienciación
 
@@ -104,9 +99,7 @@ Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name Start  
 >
 > **Si ya has hecho clic:** desconecta el cable/Wi-Fi, **no apagues el equipo** y llama a Informática de inmediato.
 
-![[captura_1_3.png]]
-
-> 📸 **[CAPTURA 1.3]** Cartel maquetado (PDF/PNG) a partir del texto anterior.
+> <img width="2480" height="3508" alt="image" src="https://github.com/user-attachments/assets/e7a73a62-636f-4e9b-824a-6a7f4e3b11d4" />
 
 ### Guía rápida de buenas prácticas
 
@@ -134,7 +127,7 @@ openssl enc -aes-256-cbc -pbkdf2 -salt -in clientes.csv -out clientes.csv.enc
 openssl enc -d -aes-256-cbc -pbkdf2 -in clientes.csv.enc -out clientes_descifrado.csv
 ```
 
-> 📸 **[CAPTURA 1.4]** Cifrado y descifrado del fichero de prueba (datos ficticios).
+> <img width="2560" height="1580" alt="image" src="https://github.com/user-attachments/assets/de35ad14-f964-49ac-9047-c95897c6b77f" />
 
 ### 1.4.2 Cifrado asimétrico
 
@@ -178,7 +171,7 @@ echo -n "Hola" | sha256sum        # efecto avalancha
 Get-FileHash .\fichero.pdf -Algorithm SHA256
 ```
 
-> 📸 **[CAPTURA 1.5]** Hash de un fichero antes y después de modificar un carácter.
+> <img width="2560" height="1034" alt="image" src="https://github.com/user-attachments/assets/da205f09-6987-43a2-be03-503aff05df84" />
 
 ### 1.4.5 Certificados digitales y PKI
 
@@ -192,7 +185,7 @@ En la empresa: certificados TLS para servicios web internos/externos, autenticac
 openssl s_client -connect www.incibe.es:443 -showcerts </dev/null | openssl x509 -noout -subject -issuer -dates
 ```
 
-> 📸 **[CAPTURA 1.6]** Cadena de certificación de un sitio (navegador o `openssl`).
+> <img width="2560" height="1034" alt="image" src="https://github.com/user-attachments/assets/c25a7625-188b-41ab-9164-6a23062230f7" />
 
 ### 1.4.6 Firma electrónica
 
@@ -230,7 +223,7 @@ Un atacante que vea p, g, 8 y 19 no puede obtener 2 con facilidad si los número
 openssl s_client -connect www.incibe.es:443 -tls1_3 </dev/null 2>/dev/null | grep -E "Protocol|Cipher|Server Temp Key"
 ```
 
-> 📸 **[CAPTURA 1.7]** Protocolo, suite de cifrado e intercambio de claves negociados.
+> <img width="2560" height="572" alt="image" src="https://github.com/user-attachments/assets/834f5e60-db90-420a-89ee-044a978c6c7b" />
 
 ## 1.5 Relación con el incidente
 
@@ -302,8 +295,6 @@ Como referencia complementaria se mapean las técnicas a **MITRE ATT&CK**:
 
 Se aplica el criterio de la guía: **el nivel más alto entre peligrosidad e impacto marca los plazos**. Se clasifica como **Crítico** hasta que se descarte la exfiltración; si se descartara, bajaría a **Alto**. Prioridad ITIL equivalente: **P1** (respuesta inmediata).
 
-> 📝 Revisa en la versión vigente de la guía la tabla exacta de niveles y plazos antes de citarla.
-
 ## 2.2 Sistemas y servicios afectados
 
 | Activo | Estado | Motivo | Acción de verificación |
@@ -346,7 +337,7 @@ Se aplica el criterio de la guía: **el nivel más alto entre peligrosidad e imp
 - Volumen de salida anómalo hacia una misma IP externa
 ```
 
-> 📸 **[CAPTURA 2.1]** Dashboard de Wazuh (o SIEM equivalente) con alertas del agente de prueba.
+> <img width="3000" height="2032" alt="image" src="https://github.com/user-attachments/assets/68b5f261-8685-4477-a115-4ecfed65fac2" />
 
 ## 2.4 Registros que se consultan
 
@@ -391,8 +382,9 @@ Get-NetTCPConnection -State Established |
   Select LocalPort, RemoteAddress, RemotePort, @{n='Proceso';e={(Get-Process -Id $_.OwningProcess).Name}}
 ```
 
-> 📸 **[CAPTURA 2.2]** Visor de eventos con el 4688/Sysmon 1 del proceso malicioso.
-> 📸 **[CAPTURA 2.3]** Salida de `Get-NetTCPConnection` mostrando la conexión a la IP externa.
+> <img width="3000" height="1504" alt="image" src="https://github.com/user-attachments/assets/cec783fb-9681-4a92-bba3-1ef0ff0d0e98" />
+
+> <img width="2560" height="1748" alt="image" src="https://github.com/user-attachments/assets/7f4b074f-17ee-4e5a-89a0-fad1677131e7" />
 
 ### 2.4.3 Sistema operativo Linux
 
@@ -411,7 +403,7 @@ sudo find / -xdev -type f -mtime -2 -not -path "/proc/*" 2>/dev/null | head -50
 last -a | head; lastb | head
 ```
 
-> 📸 **[CAPTURA 2.4]** Salida de `ss -tupn` y `auth.log` en el servidor Linux.
+> <img width="2560" height="1202" alt="image" src="https://github.com/user-attachments/assets/50aa5e39-7927-4a73-be10-25f05d5b9750" />
 
 ### 2.4.4 Cortafuegos / proxy
 
@@ -441,7 +433,7 @@ tshark -r captura_equipo.pcap -Y "dns" -T fields -e frame.time -e dns.qry.name |
 tshark -r captura_equipo.pcap -Y "tls.handshake.type==1" -T fields -e ip.dst -e tls.handshake.extensions_server_name
 ```
 
-> 📸 **[CAPTURA 2.5]** Wireshark/tshark con las conexiones al destino sospechoso.
+> <img width="2800" height="1828" alt="image" src="https://github.com/user-attachments/assets/dfcc42f6-ac13-4ff2-b78e-e3fc019a7f3e" />
 
 ## 2.5 Investigación OSINT de IP y dominios
 
@@ -487,7 +479,7 @@ curl -s https://rdap.org/ip/203.0.113.45 | head -50
 | Dominio | WHOIS | *Creado hace N días, registrador…* | Dominio recién registrado |
 | Dominio | crt.sh | *Certificado emitido el…* | Preparado para la campaña |
 
-> 📸 **[CAPTURA 2.6]** Resultado de VirusTotal/AbuseIPDB para la IP del laboratorio y salida de `whois`.
+> <img width="2800" height="1938" alt="image" src="https://github.com/user-attachments/assets/0cd8696c-13a0-4426-9daa-a569f21538f1" />
 
 **Acciones derivadas:** bloquear IP y dominio en cortafuegos/DNS/proxy, buscar otros equipos que los hayan contactado y compartir IoC con el CSIRT (apartado 5).
 
@@ -565,7 +557,7 @@ curl -s https://rdap.org/ip/203.0.113.45 | head -50
 |---|---|---|---|
 | | | | |
 
-> 📸 **[CAPTURA 2.7]** Ficha cumplimentada con los datos del laboratorio (o ticket en GLPI/DFIR-IRIS).
+> <img width="2480" height="3600" alt="image" src="https://github.com/user-attachments/assets/52074159-7bda-48d6-b0b8-940eee14ecf3" />
 
 ## 2.7 Auditoría de la situación actual
 
@@ -579,7 +571,7 @@ Además de detectar, se audita el estado del bastionado para saber por qué el a
 | Servicios y puertos expuestos | Nmap (solo red autorizada) | `sudo nmap -sV 192.168.56.0/24` |
 | Configuración del correo | `dig` | `dig +short TXT empresa.com` (SPF, DMARC en `_dmarc.empresa.com`) |
 
-> 📸 **[CAPTURA 2.8]** Informe de Lynis o PingCastle con el índice de partida.
+> <img width="2560" height="3344" alt="image" src="https://github.com/user-attachments/assets/679e06a0-f80f-429a-8409-5be91a882d20" />
 
 ## 2.8 Fuentes y referencias
 
@@ -593,18 +585,9 @@ Además de detectar, se audita el estado del bastionado para saber por qué el a
 - VirusTotal, AbuseIPDB, urlscan.io, crt.sh, Shodan, Censys
 - RFC 5737 (rangos de IP reservados para documentación)
 
-> ⚠️ **Antes de entregar:** sustituye los enlaces generales por la página concreta de cada recurso, añade la fecha de consulta y confirma en la guía vigente la tabla de niveles y plazos.
-
-
 ---
 
 # 3. Investigación y análisis forense
-
-> **Reglas del laboratorio**
-> - Trabaja solo en equipos y redes **autorizados** y aislados (red solo-anfitrión, instantánea «base limpia» antes de empezar).
-> - **No uses malware real.** Para las pruebas utiliza el fichero de prueba **EICAR** (inofensivo, detectado por todos los antivirus) o un script benigno que simule el comportamiento (abrir una conexión a una IP del laboratorio a intervalos regulares).
-> - Los indicadores (IP, dominio, hash, equipo) de este documento son **ficticios**; sustitúyelos por los de tu laboratorio.
-> - Principio guía: **la investigación no debe alterar la evidencia.**
 
 ## 3.1 Evidencias a recopilar
 
@@ -642,7 +625,7 @@ Se recoge primero lo que antes se pierde:
 | E12 | Copias de seguridad previas | NAS / backup | Hash y montaje de solo lectura | Media |
 | E13 | Declaraciones y cronología | Usuario, informática | Entrevista documentada | Media |
 
-> 📸 **[CAPTURA 3.1]** Inventario de evidencias cumplimentado (hoja de cálculo o ticket).
+> <img width="2800" height="1118" alt="image" src="https://github.com/user-attachments/assets/9639a647-f026-4dae-8d68-92e84fc156cf" />
 
 ## 3.2 Preservación de la integridad
 
@@ -700,10 +683,9 @@ find E09_logs -type f -exec sha256sum {} \; > E09_hashes.txt
 sudo ./avml E09_ram.lime
 ```
 
-> **Dilema habitual:** apagar el equipo antes de capturar la RAM destruye pruebas volátiles; capturar mal altera el estado. Por eso la **decisión y sus motivos se anotan** en la bitácora.
+> <img width="2800" height="2084" alt="image" src="https://github.com/user-attachments/assets/5f2cd003-72ad-4fb3-8797-2332a376e7d8" />
 
-> 📸 **[CAPTURA 3.2]** Adquisición de RAM y exportación de logs con sus hashes.
-> 📸 **[CAPTURA 3.3]** Imagen de disco con `dc3dd` o FTK Imager y verificación de hash.
+> <img width="2800" height="1454" alt="image" src="https://github.com/user-attachments/assets/022bac3e-a3e6-42b1-af9a-280f757143ba" />
 
 ### Almacenamiento seguro
 
@@ -727,8 +709,6 @@ Documento que acredita **quién tuvo la evidencia, cuándo, dónde y con qué fi
 | **Ley 1/2000 de Enjuiciamiento Civil** (medios de prueba electrónicos) y **LECrim** | Admisión de documentos y soportes electrónicos como prueba |
 | **Estatuto de los Trabajadores y doctrina sobre control empresarial** | El análisis de equipos de empleados debe ser proporcional y respetar su intimidad; conviene que exista política de uso aceptable y, si procede, presencia de un testigo |
 
-> 📝 Revisa la numeración vigente de las normas UNE y los artículos concretos antes de citarlos en el documento final. Si el caso puede acabar en denuncia, conviene encargar la pericial a un perito informático.
-
 ### Formulario de cadena de custodia
 
 **Caso:** INC-2026-0001 · **Evidencia:** E__ · **Descripción:** ____________________
@@ -751,7 +731,7 @@ Documento que acredita **quién tuvo la evidencia, cuándo, dónde y con qué fi
 | 1 | | | | | | ☐ |
 | 2 | | | | | | ☐ |
 
-> 📸 **[CAPTURA 3.4]** Formulario de cadena de custodia cumplimentado para E01 y E03.
+> <img width="2480" height="2500" alt="image" src="https://github.com/user-attachments/assets/e583f006-c376-4c3f-a559-0d47fd56d438" />
 
 ## 3.4 Investigación del correo electrónico
 
@@ -805,7 +785,7 @@ Herramientas: Google Admin Toolbox *Messageheader*, MXToolbox *Email Header Anal
 - **Listado de quién lo abrió, descargó o ejecutó** (logs de la pasarela y del endpoint).
 - Bloqueo del remitente, dominio y URL; refuerzo de SPF/DKIM/DMARC con política `reject`.
 
-> 📸 **[CAPTURA 3.5]** Cabeceras completas del correo con `Authentication-Results` resaltado.
+> <img width="2800" height="1064" alt="image" src="https://github.com/user-attachments/assets/9527c071-a55f-4e42-95ce-be908538ea8b" />
 
 ## 3.5 Análisis del archivo malicioso
 
@@ -884,8 +864,9 @@ Herramientas: KAPE + Eric Zimmerman Tools, Autopsy, Plaso (`log2timeline`) para 
 | Familia/clasificación probable | |
 | Técnicas ATT&CK | |
 
-> 📸 **[CAPTURA 3.6]** Salida de `olevba`/`strings`/`pestudio` o informe de sandbox.
-> 📸 **[CAPTURA 3.7]** Volatility: `windows.pslist` y `windows.netscan` con el proceso y la conexión sospechosos.
+> <img width="2800" height="2000" alt="image" src="https://github.com/user-attachments/assets/9599f548-0898-40e4-8615-8356bdf709c6" />
+
+> <img width="3000" height="1160" alt="image" src="https://github.com/user-attachments/assets/2d2621c2-7c79-4f2a-9468-455daf2b5fbb" />
 
 ## 3.6 Análisis de conexiones sospechosas
 
@@ -933,7 +914,7 @@ Con tráfico cifrado (HTTPS) no se ve el contenido: se analiza **metadatos** (IP
 
 Para estimar el alcance de la fuga se cruzan tres fuentes: bytes salientes del cortafuegos, eventos **5140/5145** (qué carpetas y ficheros leyó la cuenta comprometida) y SRUM/Sysmon (qué proceso transmitió). El resultado alimenta la decisión de **notificar a la AEPD** (apartado 5).
 
-> 📸 **[CAPTURA 3.8]** Gráfico de E/S de Wireshark o salida de intervalos mostrando la regularidad.
+> <img width="2800" height="1930" alt="image" src="https://github.com/user-attachments/assets/a32661df-4249-43e3-bd97-bd8fc092856f" />
 
 ## 3.7 Cálculo del hash SHA-256 y su relevancia forense
 
@@ -965,8 +946,6 @@ SHA-256 (familia SHA-2, estándar **FIPS 180-4**) produce una huella de **256 bi
 | Efecto avalancha | Cambiar 1 bit cambia ~50 % del hash | Detectar cualquier alteración |
 | Resistencia a preimagen | No se puede reconstruir el fichero desde el hash | Compartir IoC sin exponer contenido |
 | Resistencia a colisiones | Inviable encontrar dos ficheros con el mismo hash | Un hash identifica un fichero de forma práctica única |
-
-> MD5 y SHA-1 tienen colisiones demostradas: no se deben usar como única garantía de integridad. Se recomienda **SHA-256** (y puede añadirse un segundo algoritmo).
 
 ### Vectores de prueba (para validar tu herramienta)
 
@@ -1013,8 +992,9 @@ Get-FileHash .\evidencia.txt -Algorithm SHA256
 | **IoC compartible** | Entregar el hash al CSIRT (INCIBE-CERT/CCN-CERT) |
 | **Informe pericial** | Acreditar que lo analizado es idéntico a lo adquirido |
 
-> 📸 **[CAPTURA 3.9]** `sha256sum` del fichero, verificación `OK` y `FAILED` tras la modificación.
-> 📸 **[CAPTURA 3.10]** `Get-FileHash` en PowerShell y comparación con los vectores de prueba.
+> <img width="2560" height="698" alt="image" src="https://github.com/user-attachments/assets/54af88b8-6cb6-4bc6-8012-46bd284fe696" />
+
+> <img width="2800" height="1160" alt="image" src="https://github.com/user-attachments/assets/2e3852c2-fc75-46a7-86e3-fa4942d69ccc" />
 
 ## 3.8 Línea temporal del incidente (plantilla)
 
@@ -1051,6 +1031,4 @@ Get-FileHash .\evidencia.txt -Algorithm SHA256
 - MITRE ATT&CK: https://attack.mitre.org
 - Microsoft – Encabezados de Internet / autenticación de correo (SPF, DKIM, DMARC): https://learn.microsoft.com
 - RFC 7208 (SPF), RFC 6376 (DKIM), RFC 7489 (DMARC)
-
-> ⚠️ **Antes de entregar:** sustituye los enlaces generales por las páginas concretas, añade fecha de consulta, completa los resultados reales de tu laboratorio y confirma la numeración de las normas UNE y los artículos legales citados.
 
