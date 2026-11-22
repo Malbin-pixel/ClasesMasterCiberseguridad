@@ -18,8 +18,6 @@
 
 # 1. Prevención y concienciación
 
-> **Caso:** empresa de ~100 empleados, infraestructura híbrida (Ubuntu Server y Windows Server con Directorio Activo), sin procedimientos formales de prevención ni de respuesta. Incidente de phishing con ejecución de un adjunto malicioso y sospecha de exfiltración de datos de clientes.
-
 ## 1.1 Principales riesgos y amenazas
 
 Se sigue la lógica de MAGERIT v3 / ISO 27005: activo → amenaza → vulnerabilidad → riesgo (probabilidad × impacto, escala 1-5).
@@ -38,7 +36,6 @@ Se sigue la lógica de MAGERIT v3 / ISO 27005: activo → amenaza → vulnerabil
 **Niveles:** Crítico 15-25 · Alto 10-14 · Medio 5-9 · Bajo 1-4.
 
 ><img width="2560" height="3436" alt="image" src="https://github.com/user-attachments/assets/b13671d5-2a92-4596-9361-6a314146ef77" />
-
 
 ## 1.2 Normas de seguridad para los puestos de trabajo
 
@@ -82,22 +79,6 @@ Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name Start  
 **Métricas objetivo:** tasa de clic en simulacros < 5 % en 12 meses; tasa de reporte > 60 %; tiempo medio de reporte < 15 min.
 
 **Principio de cultura:** cultura sin culpa; quien reporta pronto ayuda, no es sancionado.
-
-### Contenido del cartel «No muerdas el anzuelo» (phishing)
-
-> **TÍTULO:** ¿Te ha llegado un correo raro? **Párate. Piensa. Reporta.**
->
-> **Señales de alarma**
-> 1. 🕵️ **Remitente:** el nombre parece conocido, pero el dominio no coincide (`rrhh@empresa-rrhh.co` ≠ `@empresa.com`).
-> 2. ⏰ **Urgencia o amenaza:** «hoy o pierdes tu nómina».
-> 3. 📎 **Adjunto inesperado:** `.zip`, `.iso`, `.html`, documento que pide «habilitar contenido/macros».
-> 4. 🔗 **Enlace sospechoso:** pasa el ratón y mira la URL real antes de hacer clic.
-> 5. 🔑 **Te piden credenciales o datos:** RR. HH. nunca los pide por correo.
-> 6. ✍️ **Saludo genérico y errores** de redacción.
->
-> **Qué hacer:** ❌ No abras · ❌ No hagas clic · ❌ No reenvíes · ✅ **Pulsa «Reportar phishing»** o escribe a `seguridad@empresa.com` · 📞 Ext. **XXXX** (Informática).
->
-> **Si ya has hecho clic:** desconecta el cable/Wi-Fi, **no apagues el equipo** y llama a Informática de inmediato.
 
 > <img width="2480" height="3508" alt="image" src="https://github.com/user-attachments/assets/e7a73a62-636f-4e9b-824a-6a7f4e3b11d4" />
 
@@ -248,14 +229,9 @@ openssl s_client -connect www.incibe.es:443 -tls1_3 </dev/null 2>/dev/null | gre
 - RFC 5280 (X.509), RFC 8446 (TLS 1.3), RFC 7748 (X25519), RFC 8017 (RSA)
 - Reglamento (UE) 910/2014 y 2024/1183 (eIDAS): https://eur-lex.europa.eu
 
-> ⚠️ **Antes de entregar:** comprueba que cada enlace sigue activo y sustituye los enlaces generales por la página concreta de cada guía que cites, con fecha de consulta.
-
-
 ---
 
 # 2. Detección y auditoría
-
-> **Aviso sobre los datos:** las IP, dominios, hashes y nombres de equipo de este apartado son **ficticios** (rangos de documentación `203.0.113.0/24`, `198.51.100.0/24` y dominios `.example`). Sustitúyelos por los de tu laboratorio. Los indicadores se escriben «defangeados» (`hxxp`, `[.]`) para evitar clics accidentales.
 
 ## 2.1 Clasificación del incidente y gravedad
 
