@@ -95,7 +95,7 @@ Invoke-Command -ComputerName (Get-ADComputer -Filter * | Select -Expand Name) -S
 Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational'; Id=3} |
   Where-Object { $_.Message -match '203\.0\.113\.45' } | Select TimeCreated, Message
 ```
-
+Reglas de aislamiento creadas y prueba de que el equipo ya no tiene conectividad
 > <img width="905" height="515" alt="image" src="https://github.com/user-attachments/assets/0b96a623-3e80-4145-8625-bc34709b8843" />
 
 ### 4.1.2 Bloqueo perimetral de conexiones maliciosas
@@ -135,7 +135,7 @@ sudo ufw logging medium
 - Política de salida **por defecto denegada** (solo se permite lo necesario) y filtrado de DNS.
 - Segmentación en VLAN (oficina, servidores, planta/IoT, invitados) con reglas entre zonas.
 - Inspección TLS selectiva/proxy para tráfico saliente de estaciones.
-
+Reglas de bloqueo (cortafuegos y DNS) y el log con el primer intento denegado
 > <img width="907" height="332" alt="image" src="https://github.com/user-attachments/assets/f8854041-486e-45d0-9c9a-807f6d10c9b1" />
 
 ### 4.1.3 Revocación de credenciales comprometidas
@@ -180,7 +180,7 @@ sudo usermod -L usuario && sudo pkill -KILL -u usuario
 sudo passwd -l usuario
 sudo rm ~/.ssh/authorized_keys     # tras copiar como evidencia; regenerar claves
 ```
-
+Cuenta deshabilitada, contraseña restablecida y fallo de inicio de sesión posterior
 > <img width="911" height="297" alt="image" src="https://github.com/user-attachments/assets/2be341b8-42c5-42e1-9b1c-187f10ab5661" />
 
 ### 4.1.4 Erradicación de la amenaza
@@ -221,7 +221,7 @@ sudo find / -xdev -newermt "2026-11-01" -type f -perm -4000 2>/dev/null   # SUID
 | Servidor con acceso del atacante confirmado | **Reconstruir** y rotar secretos |
 | Controlador de dominio con indicios de compromiso | Valorar **reconstrucción** del DC (o del bosque) con asistencia especializada |
 | Equipo que solo recibió el correo sin abrirlo | Purgar correo y vigilar |
-
+Revisión de persistencia sin hallazgos tras la erradicación, y equipo reconstruido con línea base aplicada
 > <img width="907" height="281" alt="image" src="https://github.com/user-attachments/assets/ce69c5aa-ffe5-40bc-8e2e-b126f5c9a33f" />
 
 ## 4.2 Plan de recuperación segura de servicios
@@ -301,6 +301,7 @@ Get-FileHash .\datos_restaurados\* -Algorithm SHA256 | Export-Csv restauracion_h
 | 8 | Vigilancia reforzada (≥ 14 días) con alertas sobre IoC | Sin reaparición |
 | 9 | Cierre del incidente y registro de la recuperación | Bitácora completada |
 
+Backup, `restic check`, restauración de prueba y comparación de hashes/`diff`
 > <img width="907" height="331" alt="image" src="https://github.com/user-attachments/assets/88d87df3-19d1-41fc-9c23-3294a886fb59" />
 
 ### Gestión de la presión de la dirección
@@ -354,11 +355,11 @@ while true; do curl -s -m 3 http://192.168.56.30:8080/ping >/dev/null; sleep 60;
 | MTTR (tiempo de recuperación) | Hora de restauración − hora de inicio | Dentro del RTO |
 | % equipos con contramedida aplicada | Equipos conformes / total | 100 % |
 | Restauraciones correctas | Pruebas OK / pruebas realizadas | 100 % |
-
+Comparativa antes/después del tráfico a la IP
 > <img width="806" height="282" alt="image" src="https://github.com/user-attachments/assets/3a26cf08-5235-42e8-9338-240ad95592a6" />
-
+ `nslookup` del dominio con sinkhole, e inicio de sesión fallido con la cuenta revocada
 > <img width="908" height="272" alt="image" src="https://github.com/user-attachments/assets/6cb9892b-3fd6-4539-b7e0-82a3554477de" />
-
+Informe de Lynis o CIS-CAT antes y después del bastionado
 > <img width="908" height="137" alt="image" src="https://github.com/user-attachments/assets/a2c50999-63cb-49a1-b48f-281adb777391" />
 
 ## 4.4 Medidas para evitar nuevos incidentes
@@ -498,6 +499,7 @@ La **ciberresiliencia** es la capacidad de la organización de **seguir cumplien
 >
 > **Contacto:** [DPD, correo, teléfono]. Hemos [notificado/vamos a notificar] el incidente a la Agencia Española de Protección de Datos.
 
+Comunicación interna redactada y enviada por el canal alternativo
 > <img width="805" height="355" alt="image" src="https://github.com/user-attachments/assets/1395e5b5-519f-4a16-8dd1-24719dd0c627" />
 
 ## 5.2 Notificación de una brecha de datos personales a la AEPD
@@ -565,7 +567,7 @@ El RGPD prevé sanciones administrativas por infringir las obligaciones de los a
 | **Aseguradora (ciberseguro)** | Si existe póliza, avisar en el plazo contractual |
 | **Clientes/proveedores** | Si sus datos o sistemas se ven afectados o lo exige el contrato |
 | **Regulador sectorial** | Si la empresa es de un sector regulado (financiero, sanitario, telecomunicaciones) |
-
+Resultado de la herramienta *Asesora Brecha* o formulario de notificación con los campos preparados
 > <img width="807" height="332" alt="image" src="https://github.com/user-attachments/assets/5568786a-9b25-44ef-b3d7-8944d13f23db" />
 
 ## 5.3 Organismos CERT/CSIRT
@@ -645,8 +647,9 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 | Clasificación TLP | **TLP:AMBER** (distribución limitada) por defecto |
 | Contacto técnico | Persona de guardia disponible en horario de crisis |
 
+Página de reporte de incidentes de INCIBE-CERT y/o ficha de LUCIA/CCN-CERT
 > <img width="806" height="367" alt="image" src="https://github.com/user-attachments/assets/8f8944d0-fa32-4e11-9501-8bbd67cf3557" />
-
+Borrador del reporte al CSIRT con los IoC del caso
 > <img width="803" height="330" alt="image" src="https://github.com/user-attachments/assets/f428f9b7-aa0e-4e7d-b406-be671038db92" />
 
 ## 5.4 Responsables y plazos (resumen)
@@ -907,10 +910,11 @@ Un **CSIRT/CERT** (*Computer Security Incident Response Team*) es un equipo que 
 | D4 | 09:50 | Acceso persistente | Expulsión coordinada + apoyo externo | Marta | Evitar reentrada | Apdo. 4.1.3-4.1.4 |
 | D5 | 10:10 | Presión de la dirección | Recuperación escalonada | Carlos/Marta | Evitar reinfección | Apdo. 4.2 |
 
+Bitácora del ejercicio con las horas y decisiones
 > <img width="802" height="388" alt="image" src="https://github.com/user-attachments/assets/b3635fe5-361c-41b1-b593-da4f4aca130e" />
-
+Acta/Registro de decisiones firmado, o captura del vídeo/grabación del ejercicio
 > <img width="805" height="301" alt="image" src="https://github.com/user-attachments/assets/a06028cd-9642-4d01-a96f-2f41db8594ff" />
-
+Checklist de reanudación cumplimentado
 > <img width="806" height="408" alt="image" src="https://github.com/user-attachments/assets/98d69a9d-7f2b-456d-a689-415e6fe19abd" />
 
 ## 6.5 Mensajes finales de comunicación
